@@ -1,9 +1,7 @@
 //
 //  TagComparitor.m
-//  TLV parser
-//
-//  Created by Damon Yuan on 2/3/14.
-//  Copyright (c) 2014 Damon Yuan. All rights reserved.
+//  Created by Damon Yuan on 11/6/14.
+//  All rights reserved.
 //
 
 #import "TagComparitor.h"

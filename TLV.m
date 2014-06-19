@@ -1,9 +1,8 @@
 //
 //  TLV.m
-//  TLV parser
 //
-//  Created by Damon Yuan on 2/3/14.
-//  Copyright (c) 2014 Damon Yuan. All rights reserved.
+//  Created by Damon Yuan on 8/6/14.
+//  All rights reserved.
 //
 
 #import "TLV.h"
@@ -212,7 +211,7 @@
         NSUInteger lenInt = 0;
         for (int i = 1; i<lenBytes; i++) {
             UInt8 temp = dataBytes[i];
-            lenInt = lenInt*16+temp;
+            lenInt = lenInt*16*16+temp;
         }
         len = [NSNumber numberWithInt:lenInt];
     }else{
@@ -225,34 +224,42 @@
 
 + (TLV*)unserialise:(NSData*)responseData   //data without sw1sw2
 {
-    TLV* TLV_result = [[TLV alloc]init];
-    NSInteger length = 0;
-    //NSData* _responseData = responseData;
-
-    while (length>=0 && responseData.length>0)
-    {
-        TagValueCouple* tag_data = [self getTag:responseData];
-        LengthValueCouple* length_data = [self getLength:[tag_data objectAtIndex:1]];
-        Tag* tag = [tag_data objectAtIndex:0];
+    @try{
+        TLV* TLV_result = [[TLV alloc]init];
+        NSInteger length = 0;
+        //NSData* _responseData = responseData;
         
-        NSData* rawData = [length_data objectAtIndex:1];
-        Byte* bytes = (Byte*)[rawData bytes];
-        NSNumber* len = [length_data objectAtIndex:0];
-        length = [len integerValue];; //would be -1 if dataFromGetTag.length < 1(only have Tag in TLV).
-        
-        if (tag) {
-            if ([tag constructed]) {
-                NSData* valueForTag = [NSData dataWithBytes:bytes length:length];
-                responseData = [NSData dataWithBytes:bytes+length length:rawData.length-length];
-                [TLV_result append:tag Value:[self unserialise:valueForTag]];
-            }else{
-                NSData* valueForTag = [NSData dataWithBytes:bytes length:length];
-                responseData = [NSData dataWithBytes:bytes+length length:rawData.length-length];
-                [TLV_result append:tag Value:valueForTag];
+        while (length>=0 && responseData.length>0)
+        {
+            TagValueCouple* tag_data = [self getTag:responseData];
+            LengthValueCouple* length_data = [self getLength:[tag_data objectAtIndex:1]];
+            Tag* tag = [tag_data objectAtIndex:0];
+            
+            NSData* rawData = [length_data objectAtIndex:1];
+            Byte* bytes = (Byte*)[rawData bytes];
+            NSNumber* len = [length_data objectAtIndex:0];
+            length = [len integerValue];; //would be -1 if dataFromGetTag.length < 1(only have Tag in TLV).
+            
+            if (tag) {
+                if ([tag constructed]) {
+                    NSData* valueForTag = [NSData dataWithBytes:bytes length:length];
+                    responseData = [NSData dataWithBytes:bytes+length length:rawData.length-length];
+                    [TLV_result append:tag Value:[self unserialise:valueForTag]];
+                }else{
+                    NSData* valueForTag = [NSData dataWithBytes:bytes length:length];
+                    responseData = [NSData dataWithBytes:bytes+length length:rawData.length-length];
+                    [TLV_result append:tag Value:valueForTag];
+                }
             }
         }
+        return TLV_result;
+
     }
-    return TLV_result;
+    @catch (NSException *exception) {
+         NSLog(@"Damon: Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, exception);
+        //we should stop transaction.
+        return [[TLV alloc]init];
+    }
 }
 
 @end
