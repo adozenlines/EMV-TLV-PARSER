@@ -31,10 +31,25 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <p>Conforming to <a href="http://www.openscdp.org/scripts/tutorial/emv/TLV.html">http://www.openscdp.org/scripts/tutorial/emv/TLV.html</a>;
-Tested on Miura Payment System.</p>
+        <h1>
+<a name="emv-tlv-parser" class="anchor" href="#emv-tlv-parser"><span class="octicon octicon-link"></span></a>EMV-TLV-PARSER</h1>
 
-<p>Main method.
+<p>EMV TLV PARSER</p>
+
+<h1>
+<a name="what-is-this" class="anchor" href="#what-is-this"><span class="octicon octicon-link"></span></a>What is this?</h1>
+
+<p>TLV data formmat parser for EMV transaction. 
+Conforming to <a href="http://www.openscdp.org/scripts/tutorial/emv/TLV.html">http://www.openscdp.org/scripts/tutorial/emv/TLV.html</a>.
+Tested on Miura Payment System.
+Hope it helps.</p>
+
+<h1>
+<a name="how-to-use-it" class="anchor" href="#how-to-use-it"><span class="octicon octicon-link"></span></a>How to use it?</h1>
+
+<p>Import EMVTLV to your project.</p>
+
+<p>Main methods.
 //from TLV raw NSData to TLV Class Instance.</p>
 
 <ul>
@@ -46,6 +61,62 @@ Tested on Miura Payment System.</p>
 <ul>
 <li>(NSMutableData*) serialise;<br>
 </li>
+</ul>
+
+<p>Others
+// Init a TLV with tag and its value</p>
+
+<ul>
+<li>(instancetype)initWithTag:(EMVTag*)tag Value:(NSObject*)value;</li>
+</ul>
+
+<p>// Return number of tag-value couple.</p>
+
+<ul>
+<li>(int)<strong>len</strong>;</li>
+</ul>
+
+<p>// Return the tag-value couple at the position of index</p>
+
+<ul>
+<li>(instancetype)<strong>getitem</strong>:(NSUInteger)index;</li>
+</ul>
+
+<p>// Check if the EMVTLV instance is empty</p>
+
+<ul>
+<li>(BOOL)empty;</li>
+</ul>
+
+<p>// Get the first tag in the EMVTLV instance</p>
+
+<ul>
+<li>(EMVTag*)firstTag;</li>
+</ul>
+
+<p>// Get all the tags in eht EMVTLV instance</p>
+
+<ul>
+<li>(NSArray*)tags;</li>
+</ul>
+
+<p>// Append a TLV tag-value couple at the end of a EMVTLV instance</p>
+
+<ul>
+<li>(void)extend:(EMVTLV*)tlv;</li>
+<li>(void)append:(EMVTag*)tag Value:(NSObject*)value;</li>
+</ul>
+
+<p>// Search and return all the tag-value couples under a tagPath</p>
+
+<ul>
+<li>(NSMutableArray*) _search:(NSString*)tagPath;</li>
+</ul>
+
+<p>// Search and return the first tag-value couple under a tagPath</p>
+
+<ul>
+<li>(instancetype)firstMatch:(NSString*)tagPath;</li>
 </ul>
       </section>
     </div>
