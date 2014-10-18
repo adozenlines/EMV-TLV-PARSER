@@ -15,7 +15,7 @@ typedef NSArray                      LengthValueCouple;
 @property (nonatomic, strong) NSMutableArray* objects;
 
 - (instancetype)initWithTag:(EMVTag*)tag Value:(NSObject*)value;
-- (int)__len__;
+- (int)__len__; // return number of tag-value couple.
 - (instancetype)__getitem__:(NSUInteger)index;
 - (BOOL)empty;
 - (EMVTag*)firstTag;
