@@ -3,7 +3,7 @@ Tested on Miura Payment System.
 
 Main method.
 //from TLV raw NSData to TLV Class Instance.
-+ (TLV*)unserialise:(NSData*)responseData; 
++ (EMVTLV*)unserialise:(NSData*)responseData;
 
 //from TLV Class Instance to TLV raw NSData.
-+ (NSMutableData*) serialise: (TLV*)tlv;   
+- (NSMutableData*) serialise;  

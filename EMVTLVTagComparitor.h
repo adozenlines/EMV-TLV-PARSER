@@ -1,20 +1,20 @@
 //
-//  TagComparitor.h
+//  TVLTagComparitor.m
 //
 //  Created by Damon Yuan on 11/6/14.
-//  All rights reserved.
 //
+
 typedef NSArray                      TagValueCouple;
 typedef NSArray                      LengthValueCouple;
 #import <Foundation/Foundation.h>
 
-@class TLV;
-@class Tag;
-@interface TagComparitor : NSObject
+@class EMVTLV;
+@class EMVTag;
+@interface EMVTLVTagComparitor : NSObject
 
 - (instancetype)initWithArgs:(id)_args;
-- (Tag*)tagLookup:(NSString*)description;
+- (EMVTag*)tagLookup:(NSString*)description;
 + (NSMutableArray*)tagPathDifferentiator:(NSString*)tagPath;
 + (NSMutableString*)tagPathCombinar:(NSMutableArray*)returnArray;
-- (BOOL)match:(TLV*)tlv;
+- (BOOL)match:(EMVTLV*)tlv;
 @end

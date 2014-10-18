@@ -1,108 +1,20 @@
 //
-//  Tag.m
+//  EMVTLVDescription.h
 //
-//  Created by Damon Yuan on 8/6/14.
-//  All rights reserved.
+//  Created by Damon on 18/10/14.
 //
 
-#import "Tag.h"
+#import "EMVTLVDescription.h"
 
-@implementation Tag
-//argument tagData can be nsdata or nsstring.
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-       
-    }
-    return self;
-}
-- (instancetype)initWithTag:(id)tagData
-{
-    self = [super init];
-    if (self) {
-        if (([tagData class] == [NSData class])||([[tagData class] isSubclassOfClass:[NSData class]])) {
-            self.tagData = [NSData dataWithData:tagData];
-        }
-        if (([tagData class] == [NSString class])||([[tagData class]isSubclassOfClass:[NSString class]])) {
-            self.tagData = [self stringToData:tagData];
-        }
-    }
-    return self;
+@interface EMVTLVDescription(){
 }
 
--(BOOL)constructed
-{
-    Byte buf;
-    NSRange range = NSMakeRange(0, 1);
-    [self.tagData getBytes:&buf range:range];
-    return ((buf & 0x20) == 0x20);
-}
+@end
 
-//string from nsdata
-- (NSString* )serialise
+@implementation EMVTLVDescription
++ (NSDictionary *)getTLVDescription
 {
-    NSData *data = self.tagData;
-    NSUInteger capacity = data.length * 2;
-    NSMutableString *sbuf = [NSMutableString stringWithCapacity:capacity];
-    const unsigned char *buf = data.bytes;
-    NSInteger i;
-    for (i=0; i<data.length; ++i) {
-        [sbuf appendFormat:@"%02X", (NSUInteger)buf[i]];
-    }
-    NSMutableString *temp = [NSMutableString stringWithString:@"0x"];
-    [temp appendString:sbuf];
-    
-    return [NSString stringWithString:temp];
-}
-//string to data
-- (NSData*)stringToData:(NSString*)command
-{
-    command = [command stringByReplacingOccurrencesOfString:@"0x" withString:@""];
-    NSMutableData *commandToSend= [[NSMutableData alloc] init];
-    unsigned char whole_byte;
-    char byte_chars[3] = {'\0','\0','\0'};
-    for (int i = 0; i < ([command length] / 2); i++) {
-        byte_chars[0] = [command characterAtIndex:i*2];
-        byte_chars[1] = [command characterAtIndex:i*2+1];
-        whole_byte = strtol(byte_chars, NULL, 16);
-        [commandToSend appendBytes:&whole_byte length:1];
-    }
-    //NSLog(@"Damon: Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, commandToSend);
-    return [NSData dataWithData:commandToSend];
-}
-
-//get the description based on the tag
-- (NSString*)description
-{
-    NSString* tagString = [self serialise];
-    return [[self _getDescriptions] valueForKey:tagString];
-}
-
-//get the tag object based on the description
-- (Tag*)tagLookup:(NSString*)description
-{
-    NSArray* a = [[self _getDescriptions] allKeysForObject:description];
-    if ([a count]==0) {
-        NSLog(@"Damon: Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"No Tag for this description");
-        return nil;
-    }
-    if ([a count] == 1) {
-        Tag* tag = [[Tag alloc]initWithTag:[a objectAtIndex:0]];
-        return tag;
-    }
-    return nil;
-}
-
-- (NSString*)_descriptionForKey:(NSString*)key
-{
-    NSString* _key = [key lowercaseString];
-    return [[self _getDescriptions] valueForKey:_key];
-}
-
-- (NSDictionary*)_getDescriptions
-{
-    NSDictionary* descriptions = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary* descriptions = [[NSMutableDictionary alloc] init];
     [descriptions setValue:@"Card Status" forKey:@"0x48"];
     [descriptions setValue:@"AID" forKey:@"0x4f"];
     [descriptions setValue:@"Application Label" forKey:@"0x50"];
@@ -253,12 +165,8 @@
     [descriptions setValue:@"Issuer script size limit" forKey:@"0xdfdf16"];
     [descriptions setValue:@"Log DOL" forKey:@"0xdfdf17"];
     [descriptions setValue:@"Partial AID Selection Allowed" forKey:@"0xe001"];
-    return descriptions;
+    
+    return [NSDictionary dictionaryWithDictionary:descriptions];
 }
-
-
-
-
-
 
 @end

@@ -1,33 +1,30 @@
 //
-//  TLV.h
+//  EMVTLV.h
 //
 //  Created by Damon Yuan on 8/6/14.
-//  All rights reserved.
 //
+
 typedef NSArray                      TagValueCouple;
 typedef NSArray                      LengthValueCouple;
 #import <Foundation/Foundation.h>
 
-@class Tag;
+@class EMVTag;
 
-@interface TLV : NSObject
+@interface EMVTLV : NSObject
 @property (nonatomic, strong) NSString* prefix;
-//TLV tagValue couple is stored here.
 @property (nonatomic, strong) NSMutableArray* objects;
 
-
--(instancetype)initWithTag:(Tag*)tag Value:(NSObject*)value;
-//- (void)append:(Tag*)tag Value:(NSObject*)value;
+- (instancetype)initWithTag:(EMVTag*)tag Value:(NSObject*)value;
 - (int)__len__;
 - (instancetype)__getitem__:(NSUInteger)index;
 - (BOOL)empty;
-- (Tag*)firstTag;
+- (EMVTag*)firstTag;
 - (NSArray*)tags;
-- (void)extend:(TLV*)tlv;
-- (void)append:(Tag*)tag Value:(NSObject*)value;
-
-+ (TLV*)unserialise:(NSData*)responseData;
-+ (NSMutableData*) serialise: (TLV*)tlv;
+- (void)extend:(EMVTLV*)tlv;
+- (void)append:(EMVTag*)tag Value:(NSObject*)value;
 - (NSMutableArray*) _search:(NSString*)tagPath;
 - (instancetype)firstMatch:(NSString*)tagPath;
+
++ (EMVTLV*)unserialise:(NSData*)responseData;
+- (NSMutableData*) serialise;
 @end
