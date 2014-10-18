@@ -75,7 +75,7 @@
             [tagPath appendString:[temp_tag serialiseTag]];
             [self.tagPaths setObject:[NSNumber numberWithInt:i] forKey:tagPath];
         }else{
-            BPLogDebug(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"(un)constructed tag/value mismatch");
+            NSLog(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"(un)constructed tag/value mismatch");
         }
     }
 }
@@ -105,14 +105,14 @@
 {
     NSArray* a = [[self _getDescriptions] allKeysForObject:description];
     if ([a count]==0) {
-        BPLogDebug(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"No Tag for this description");
+        NSLog(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"No Tag for this description");
         return nil;
     }
     if ([a count] == 1) {
         EMVTag* tag = [[EMVTag alloc] initWithTag:[a objectAtIndex:0]];
         return tag;
     }
-    BPLogDebug(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"Duplicated description");
+    NSLog(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"Duplicated description");
     return nil;
 }
 

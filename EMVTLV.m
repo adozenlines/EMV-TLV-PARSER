@@ -260,7 +260,7 @@
 
     }
     @catch (NSException *exception) {
-         BPLogDebug(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, exception);
+         NSLog(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, exception);
     }
 }
 

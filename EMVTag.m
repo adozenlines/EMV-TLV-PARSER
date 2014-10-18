@@ -73,7 +73,7 @@
     NSArray* a = [descriptions allKeysForObject:description];
     
     if ([a count]==0) {
-        BPLogDebug(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"No Tag for this description");
+        NSLog(@"Logging %@ in %@: %@", NSStringFromSelector(_cmd), self, @"No Tag for this description");
         return nil;
     }
     
