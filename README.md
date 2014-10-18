@@ -12,7 +12,7 @@ Hope it helps.
 
 #How to use it?
 
-Import EMVTLV to your project.
+Import EMVTLV.h to your project.
 
 ## Main methods.
 
