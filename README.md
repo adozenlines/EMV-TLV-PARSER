@@ -5,7 +5,7 @@ EMV TLV PARSER
 
 #What is this?
 
-TLV data formmat parser for EMV transaction. 
+TLV data format parser for EMV transaction. 
 Conforming to http://www.openscdp.org/scripts/tutorial/emv/TLV.html.
 Tested on Miura Payment System.
 Hope it helps.
